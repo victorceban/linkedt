@@ -1,0 +1,28 @@
+body {
+    min-width: 500px;
+}
+
+.body-line textarea {
+    width: 100%;
+    min-height: 300px;
+}
+
+.muted {
+    color: lightgrey;
+    transition: color 0.5s ease-in-out;
+}
+
+.pull-right {
+    float: right;
+}
+
+button {
+    transition: opacity 0.5s ease-in-out;
+}
+
+button:disabled {
+    opacity: 0.1
+}
+button:not(:disabled) + .muted {
+  color: black;
+}
