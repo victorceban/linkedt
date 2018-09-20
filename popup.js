@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   b.addEventListener('click', saveClicked);
   const switchToSaveMode = () => {
-    b.value = 'save';
+    b.innerHTML = 'save';
     b.disabled = false;
   }
   ta.addEventListener('change', () => switchToSaveMode());

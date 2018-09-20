@@ -16,18 +16,15 @@
   const lockClass = 'cva-filled-56af4b6e-5dcf-4611-b147-5e96b2cd756f';
 
   function tryStartFillInvite() {
+    seeIfExistsAndClickOnOnAddANoteButton_Or_DitchCancel();
     let template = '';
-
     var sendInviteTextArea = document.querySelector('#custom-message');
-    if (!sendInviteTextArea) {
-      seeIfExistsAndClickOnOnAddANoteButton();
-    }
-
-    var sendInviteTextArea = document.querySelector('#custom-message');
+    
     if (!sendInviteTextArea || sendInviteTextArea.classList.contains(lockClass)) {
       return;
     }
-
+    
+    seeIfExistsAndClickOnOnAddANoteButton_Or_DitchCancel();
     chrome.storage.sync.get('cva.LinkedInTemplate', function (val) {
       try {
         template = val['cva.LinkedInTemplate'] || defaultTemplate;
@@ -44,7 +41,7 @@
     });
   }
 
-  function seeIfExistsAndClickOnOnAddANoteButton() {
+  function seeIfExistsAndClickOnOnAddANoteButton_Or_DitchCancel() {
     try {
       var allInviteButtons = document.querySelectorAll('.send-invite__actions button');
       allInviteButtons.forEach(b => {
