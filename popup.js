@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   b.addEventListener('click', saveClicked);
-  ta.addEventListener('change', function () {
+  const switchToSaveMode = () => {
+    b.value = 'save';
     b.disabled = false;
-  });
+  }
+  ta.addEventListener('change', () => switchToSaveMode());
 
-  ta.addEventListener('keyup', function () {
-    b.disabled = false;
-  });
+  ta.addEventListener('keyup', () => switchToSaveMode());
 
 });
 
@@ -23,10 +23,10 @@ function saveClicked() {
 
 function cvaStoreTemplate(val) {
   console.log('store called', val);
-
+  document.getElementById('saveButton').disabled = true;
   chrome.storage.sync.set({
     'cva.LinkedInTemplate': val,
   }, function () {
-    document.getElementById('saveButton').disabled = false;
+    document.getElementById('saveButton').innerHTML = 'saved';
   });
 }

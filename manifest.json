@@ -3,7 +3,7 @@
 
   "name": "LinkedIn templater",
   "description": "Replaces generic linked in 'connect' message with one defined by you",
-  "version": "0.4.2",
+  "version": "0.5.0",
 
   "icons": {
     "128": "icon_128.png"

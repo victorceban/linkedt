@@ -1,30 +1,6 @@
-const waitDialogMode = 'wdm';
-const waitTextMode = 'wdd';
-
-try {
-  chrome.storage.sync.get('cva.LinkedInTemplate', function (val) {
-    try {
-      let tryv1 = document.querySelector('.iwrite-in h1 strong');
-      window['cva.LinkedInTemplate'] = val['cva.LinkedInTemplate'] || 'Hello |NAME| \r\nLet us be friends\r\n\r\n-me';
-      window['cva.LinkedInTemplate.waitmode'] = waitDialogMode;
-      if (!tryv1) {
-        setInterval(tryv2asdasjejajwejhkhkjbnshgfjskjehfes, 1000);
-        setInterval(addNoteClickerDASda34234asdasd, 1000)
-        return;
-      }
-
-      var who = toTitleCase(document.querySelector('.iwrite-in h1 strong').innerHTML).split(' ')[0];
-
-      what = what.replace(/\|NAME\|/g, who);
-
-      document.querySelector('[value="IF"]').checked = true;
-      document.querySelector('[name="greeting"]').value = what;
-
-    } catch (e2) {
-      console.log('e iner:', e2);
-    }
-
-  });
+(function () {
+  const defaultTemplate = 'Hello |NAME| \r\nLet us be friends\r\n\r\n-me'
+  let template = defaultTemplate;
 
   function toTitleCase(str) {
     return str.replace(/\w\S*/g,
@@ -33,33 +9,56 @@ try {
           txt.substr(1).toLowerCase();
       });
   }
-} catch (e) {
-  console.log('e outer:', e);
-}
 
-function addNoteClickerDASda34234asdasd(){
-  var sendInvite = document.querySelector('.send-invite__actions .button-secondary-large');
-  if(sendInvite)
-  {
-    sendInvite.click();
-    tryv2asdasjejajwejhkhkjbnshgfjskjehfes(document.getElementById('custom-message'));
-  }
-}
 
-function tryv2asdasjejajwejhkhkjbnshgfjskjehfes(el) {
-  let tryv2 = el || document.getElementById("connect-message-content");
-  if (!tryv2) {
-    window['cva.LinkedInTemplate.waitmode'] = waitDialogMode;
-    return;
+
+
+  const lockClass = 'cva-filled-56af4b6e-5dcf-4611-b147-5e96b2cd756f';
+
+  function tryStartFillInvite() {
+    let template = '';
+
+    var sendInviteTextArea = document.querySelector('#custom-message');
+    if (!sendInviteTextArea) {
+      seeIfExistsAndClickOnOnAddANoteButton();
+    }
+
+    var sendInviteTextArea = document.querySelector('#custom-message');
+    if (!sendInviteTextArea || sendInviteTextArea.classList.contains(lockClass)) {
+      return;
+    }
+
+    chrome.storage.sync.get('cva.LinkedInTemplate', function (val) {
+      try {
+        template = val['cva.LinkedInTemplate'] || defaultTemplate;
+
+
+        let nameEl = document.querySelector('.pv-top-card-v2-section__info .pv-top-card-section__name');
+        var firstName = toTitleCase(nameEl.innerHTML.trim()).split(' ')[0];
+        var savedTemplate = template.replace(/\|NAME\|/g, firstName);
+        sendInviteTextArea.value = savedTemplate;
+        sendInviteTextArea.classList.add(lockClass)
+      } catch (e2) {
+        /*supress*/
+      }
+    });
   }
-  if (window['cva.LinkedInTemplate.waitmode'] === waitTextMode) {
-    return;
+
+  function seeIfExistsAndClickOnOnAddANoteButton() {
+    try {
+      var allInviteButtons = document.querySelectorAll('.send-invite__actions button');
+      allInviteButtons.forEach(b => {
+        if (b.innerText === 'Cancel') {
+          b.style.display = 'none'
+        }
+        if (b.innerText === 'Add a note') {
+          b.click();
+        }
+      })
+    } catch (e) {
+      /*supress*/
+    }
   }
-  
-  window['cva.LinkedInTemplate.waitmode'] = waitTextMode;
-  var what = window['cva.LinkedInTemplate'];
-  let nameEl = document.querySelector('.namecard .fullname') || document.querySelector('.pv-top-card-section__information .pv-top-card-section__name');
-  var who = toTitleCase(nameEl.innerHTML).split(' ')[0];
-  what = what.replace(/\|NAME\|/g, who);
-  tryv2.value = what;
-}
+
+  setInterval(tryStartFillInvite, 1000);
+})();
